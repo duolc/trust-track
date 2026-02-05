@@ -417,7 +417,9 @@
             const sortedTrusts = [...filteredTrusts].sort((a, b) => {
                 const aVal = a[currentSort.column];
                 const bVal = b[currentSort.column];
-                if (!aVal || !bVal) return 0;
+                if (!aVal && !bVal) return 0;
+                if (!aVal) return 1;
+                if (!bVal) return -1;
                 const compare = String(aVal).localeCompare(String(bVal));
                 return currentSort.direction === 'asc' ? compare : -compare;
             });
@@ -426,7 +428,6 @@
 
             tbody.innerHTML = sortedTrusts.map((trust, index) => {
                 const checked = checkedTrusts.has(trust.name);
-                const escapedName = trust.name.replace(/'/g, "\\'");
                 const typeLabels = {
                     'tank': 'Tank',
                     'melee': 'Melee',
@@ -437,7 +438,7 @@
                     'special': 'Special'
                 };
                 return `
-                    <tr class="${checked ? 'checked' : ''}" data-type="${trust.type}" data-trust-name="${escapedName}">
+                    <tr class="${checked ? 'checked' : ''}" data-type="${trust.type}">
                         <td><input type="checkbox" ${checked ? 'checked' : ''} data-trust-index="${index}" onchange="toggleTrustByIndex(${index})"></td>
                         <td>${trust.name}</td>
                         <td><span class="type-badge type-${trust.type}">${typeLabels[trust.type]}</span></td>
@@ -480,17 +481,6 @@
                 checkedTrusts.delete(trust.name);
             } else {
                 checkedTrusts.add(trust.name);
-            }
-            saveCheckedState();
-            renderTable();
-            updateStats();
-        }
-
-        function toggleTrust(name) {
-            if (checkedTrusts.has(name)) {
-                checkedTrusts.delete(name);
-            } else {
-                checkedTrusts.add(name);
             }
             saveCheckedState();
             renderTable();
