@@ -225,6 +225,9 @@
         <div class="controls">
             <button onclick="clearAll()">Clear All</button>
             <button onclick="checkAll()">Check All</button>
+            <button onclick="exportData()">Export Data</button>
+            <button onclick="importData()">Import Data</button>
+            <input type="file" id="import-file-input" accept=".json" style="display: none;" aria-label="Import trust data from JSON file" onchange="handleImportFile(event)">
             <div class="filter-group">
                 <button onclick="filterType('all')" class="active" id="filter-all">All</button>
                 <button onclick="filterType('tank')" id="filter-tank">Tank</button>
@@ -401,6 +404,66 @@
             document.getElementById(`filter-${type}`).classList.add('active');
             
             renderTable();
+        }
+
+        function exportData() {
+            const data = {
+                version: 1,
+                exportDate: new Date().toISOString(),
+                checkedTrusts: [...checkedTrusts]
+            };
+            
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `ffxi-trusts-backup-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert(`Exported ${checkedTrusts.size} checked trusts successfully!`);
+        }
+
+        function importData() {
+            document.getElementById('import-file-input').click();
+        }
+
+        function handleImportFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const data = JSON.parse(e.target.result);
+                    
+                    // Validate the backup file format
+                    if (!data.checkedTrusts || !Array.isArray(data.checkedTrusts)) {
+                        throw new Error('Invalid backup file format');
+                    }
+                    
+                    // Check version for future compatibility
+                    if (data.version && data.version !== 1) {
+                        console.warn(`Backup file version ${data.version} may not be fully compatible`);
+                    }
+                    
+                    checkedTrusts = new Set(data.checkedTrusts);
+                    saveCheckedState();
+                    renderTable();
+                    updateStats();
+                    
+                    alert(`Successfully imported ${checkedTrusts.size} checked trusts!`);
+                } catch (error) {
+                    alert(`Error importing file: ${error.message}`);
+                    console.error('Import error:', error);
+                }
+            };
+            reader.readAsText(file);
+            
+            // Reset file input so the same file can be imported again
+            event.target.value = '';
         }
 
         init();
