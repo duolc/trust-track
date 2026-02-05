@@ -171,8 +171,9 @@
         .type-healer { background: #51cf66; color: #fff; }
         .type-support { background: #4a9eff; color: #fff; }
         .type-melee { background: #ffa94d; color: #fff; }
-        .type-mage { background: #9775fa; color: #fff; }
+        .type-caster { background: #9775fa; color: #fff; }
         .type-ranged { background: #20c997; color: #fff; }
+        .type-special { background: #e599f7; color: #fff; }
 
         .filter-group {
             display: flex;
@@ -227,11 +228,12 @@
             <div class="filter-group">
                 <button onclick="filterType('all')" class="active" id="filter-all">All</button>
                 <button onclick="filterType('tank')" id="filter-tank">Tank</button>
+                <button onclick="filterType('melee')" id="filter-melee">Melee</button>
+                <button onclick="filterType('ranged')" id="filter-ranged">Ranged</button>
+                <button onclick="filterType('caster')" id="filter-caster">Caster</button>
                 <button onclick="filterType('healer')" id="filter-healer">Healer</button>
                 <button onclick="filterType('support')" id="filter-support">Support</button>
-                <button onclick="filterType('melee')" id="filter-melee">Melee</button>
-                <button onclick="filterType('mage')" id="filter-mage">Mage</button>
-                <button onclick="filterType('ranged')" id="filter-ranged">Ranged</button>
+                <button onclick="filterType('special')" id="filter-special">Special</button>
             </div>
         </div>
 
@@ -240,8 +242,8 @@
                 <thead>
                     <tr>
                         <th style="width: 60px;">Done</th>
-                        <th onclick="sortTable('name')">Name</th>
-                        <th onclick="sortTable('type')">Type</th>
+                        <th onclick="sortTable('name')" data-column="name">Name</th>
+                        <th onclick="sortTable('type')" data-column="type">Type</th>
                     </tr>
                 </thead>
                 <tbody id="trust-tbody">
@@ -252,96 +254,135 @@
 
     <script>
         const trusts = [
-            { name: "Adelheid", type: "melee" },
-            { name: "Ajido-Marujido", type: "mage" },
-            { name: "Akeru-Bokeru", type: "support" },
-            { name: "Aldo", type: "support" },
-            { name: "Amchuchu", type: "support" },
-            { name: "Apururu", type: "healer" },
-            { name: "Arciela", type: "support" },
-            { name: "Areuhat", type: "mage" },
+            // Tanks
+            { name: "Amchuchu", type: "tank" },
             { name: "Ark Angel EV", type: "tank" },
-            { name: "Ark Angel GK", type: "melee" },
-            { name: "Ark Angel HM", type: "melee" },
-            { name: "Ark Angel MR", type: "mage" },
-            { name: "Ark Angel TT", type: "ranged" },
-            { name: "Ashera", type: "support" },
-            { name: "Augustin", type: "support" },
-            { name: "Ayame", type: "melee" },
-            { name: "Balamor", type: "melee" },
-            { name: "Brygid", type: "melee" },
-            { name: "Cherukiki", type: "healer" },
-            { name: "Cid", type: "support" },
-            { name: "Cornelia", type: "mage" },
+            { name: "Ark Angel HM", type: "tank" },
+            { name: "August", type: "tank" },
             { name: "Curilla", type: "tank" },
-            { name: "D. Shantotto", type: "mage" },
+            { name: "Gessho", type: "tank" },
+            { name: "Mnejing", type: "tank" },
+            { name: "Rahal", type: "tank" },
+            { name: "Rughadjeen", type: "tank" },
+            { name: "Trion", type: "tank" },
+            { name: "Valaineral", type: "tank" },
+            // Melee Fighters
+            { name: "Abenzio", type: "melee" },
+            { name: "Abquhbah", type: "melee" },
+            { name: "Aldo", type: "melee" },
+            { name: "Aldo (UC)", type: "melee" },
+            { name: "Areuhat", type: "melee" },
+            { name: "Ark Angel GK", type: "melee" },
+            { name: "Ark Angel MR", type: "melee" },
+            { name: "Ayame", type: "melee" },
+            { name: "Ayame (UC)", type: "melee" },
+            { name: "Babban Mheillea", type: "melee" },
+            { name: "Balamor", type: "melee" },
+            { name: "Chacharoon", type: "melee" },
+            { name: "Cid", type: "melee" },
             { name: "Darrcuiln", type: "melee" },
             { name: "Excenmille", type: "melee" },
-            { name: "Fablinix", type: "support" },
-            { name: "Ferreous Coffin", type: "tank" },
-            { name: "Gadalar", type: "melee" },
-            { name: "Gessho", type: "melee" },
+            { name: "Excenmille (S)", type: "melee" },
+            { name: "Fablinix", type: "melee" },
+            { name: "Flaviria (UC)", type: "melee" },
             { name: "Gilgamesh", type: "melee" },
-            { name: "Gromaart", type: "tank" },
             { name: "Halver", type: "melee" },
-            { name: "Ingrid", type: "tank" },
+            { name: "Ingrid II", type: "melee" },
+            { name: "Invincible Shield (UC)", type: "melee" },
             { name: "Iroha", type: "melee" },
-            { name: "Jakoh Wahcondalo", type: "melee" },
-            { name: "Joachim", type: "support" },
-            { name: "Joanlaut", type: "ranged" },
-            { name: "Kanda", type: "tank" },
-            { name: "Karaha-Baruha", type: "mage" },
-            { name: "King of Hearts", type: "support" },
-            { name: "Koru-Moru", type: "mage" },
-            { name: "Kupipi", type: "healer" },
-            { name: "Kukki-Chebukki", type: "mage" },
-            { name: "Lhe Lhangavo", type: "support" },
+            { name: "Iroha II", type: "melee" },
+            { name: "Iron Eater", type: "melee" },
+            { name: "Jakoh Wahcondalo (UC)", type: "melee" },
+            { name: "Klara", type: "melee" },
+            { name: "Lehko Habhoka", type: "melee" },
+            { name: "Lhe Lhangavo", type: "melee" },
             { name: "Lhu Mhakaracca", type: "melee" },
-            { name: "Lilisette", type: "support" },
+            { name: "Lilisette", type: "melee" },
+            { name: "Lilisette II", type: "melee" },
             { name: "Lion", type: "melee" },
-            { name: "Luzaf", type: "support" },
-            { name: "Makki-Chebukki", type: "support" },
-            { name: "Margret", type: "ranged" },
-            { name: "Mayakov", type: "support" },
-            { name: "Mildaurion", type: "mage" },
-            { name: "Mihli Aliapoh", type: "melee" },
-            { name: "Mnejing", type: "support" },
-            { name: "Monberaux", type: "support" },
-            { name: "Morimar", type: "mage" },
-            { name: "Mumor", type: "support" },
-            { name: "Najelith", type: "melee" },
+            { name: "Lion II", type: "melee" },
+            { name: "Luzaf", type: "melee" },
+            { name: "Maat", type: "melee" },
+            { name: "Maat (UC)", type: "melee" },
+            { name: "Matsui-P", type: "melee" },
+            { name: "Maximilian", type: "melee" },
+            { name: "Mayakov", type: "melee" },
+            { name: "Mildaurion", type: "melee" },
+            { name: "Morimar", type: "melee" },
+            { name: "Mumor", type: "melee" },
             { name: "Naja Salaheem", type: "melee" },
+            { name: "Naja Salaheem (UC)", type: "melee" },
+            { name: "Naji", type: "melee" },
             { name: "Nanaa Mihgo", type: "melee" },
-            { name: "Nashmeira", type: "support" },
-            { name: "Noillurie", type: "healer" },
-            { name: "Ovjang", type: "melee" },
-            { name: "Pieuje", type: "mage" },
+            { name: "Nashmeira", type: "melee" },
+            { name: "Nashmeira II", type: "melee" },
+            { name: "Noillurie", type: "melee" },
             { name: "Prishe", type: "melee" },
-            { name: "Qultada", type: "support" },
-            { name: "Rahal", type: "melee" },
-            { name: "Rainemard", type: "support" },
-            { name: "Rakoh", type: "melee" },
-            { name: "Rongelouts", type: "tank" },
-            { name: "Rosulatia", type: "support" },
-            { name: "Rukususu", type: "healer" },
-            { name: "Sakura", type: "melee" },
-            { name: "Selh'teus", type: "support" },
-            { name: "Semih Lafihna", type: "mage" },
-            { name: "Shantotto", type: "mage" },
-            { name: "Shikaree Z", type: "ranged" },
-            { name: "Silvie", type: "support" },
-            { name: "Star Sibyl", type: "healer" },
+            { name: "Prishe II", type: "melee" },
+            { name: "Rainemard", type: "melee" },
+            { name: "Romaa Mihgo", type: "melee" },
+            { name: "Rongelouts", type: "melee" },
+            { name: "Selh'teus", type: "melee" },
+            { name: "Shikaree Z", type: "melee" },
             { name: "Tenzen", type: "melee" },
-            { name: "Teodor", type: "support" },
-            { name: "Trion", type: "tank" },
-            { name: "Tsugumi", type: "ranged" },
-            { name: "Uka Totlihn", type: "healer" },
-            { name: "Ullegore", type: "tank" },
+            { name: "Teodor", type: "melee" },
+            { name: "Uka Totlihn", type: "melee" },
+            { name: "Volker", type: "melee" },
+            { name: "Zazarg", type: "melee" },
+            { name: "Zeid", type: "melee" },
+            { name: "Zeid II", type: "melee" },
+            // Ranged Fighters
+            { name: "Elivira", type: "ranged" },
+            { name: "Makki-Chebukki", type: "ranged" },
+            { name: "Margret", type: "ranged" },
+            { name: "Najelith", type: "ranged" },
+            { name: "Semih Lafihna", type: "ranged" },
+            { name: "Tenzen II", type: "ranged" },
+            // Offensive Casters
+            { name: "Adelheid", type: "caster" },
+            { name: "Ajido-Marujido", type: "caster" },
+            { name: "Ark Angel TT", type: "caster" },
+            { name: "Domina Shantotto", type: "caster" },
+            { name: "Gadalar", type: "caster" },
+            { name: "Ingrid", type: "caster" },
+            { name: "Kayeel-Payeel", type: "caster" },
+            { name: "Kukki-Chebukki", type: "caster" },
+            { name: "Leonoyne", type: "caster" },
+            { name: "Mumor II", type: "caster" },
+            { name: "Ovjang", type: "caster" },
+            { name: "Robel-Akbel", type: "caster" },
+            { name: "Rosulatia", type: "caster" },
+            { name: "Shantotto", type: "caster" },
+            { name: "Shantotto II", type: "caster" },
+            { name: "Ullegore", type: "caster" },
+            // Healers
+            { name: "Apururu (UC)", type: "healer" },
+            { name: "Cherukiki", type: "healer" },
+            { name: "Ferreous Coffin", type: "healer" },
+            { name: "Karaha-Baruha", type: "healer" },
+            { name: "Kupipi", type: "healer" },
+            { name: "Mihli Aliapoh", type: "healer" },
+            { name: "Monberaux", type: "healer" },
+            { name: "Pieuje (UC)", type: "healer" },
+            { name: "Yoran-Oran (UC)", type: "healer" },
+            { name: "Ygnas", type: "healer" },
+            // Support
+            { name: "Arciela", type: "support" },
+            { name: "Arciela II", type: "support" },
+            { name: "Joachim", type: "support" },
+            { name: "King of Hearts", type: "support" },
+            { name: "Koru-Moru", type: "support" },
+            { name: "Qultada", type: "support" },
+            { name: "Sylvie (UC)", type: "support" },
             { name: "Ulmia", type: "support" },
-            { name: "Valaineral", type: "tank" },
-            { name: "Volker", type: "tank" },
-            { name: "Yoran-Oran", type: "healer" },
-            { name: "Zeid", type: "melee" }
+            // Special
+            { name: "Brygid", type: "special" },
+            { name: "Cornelia", type: "special" },
+            { name: "Kupofried", type: "special" },
+            { name: "Kuyin Hathdenna", type: "special" },
+            { name: "Moogle", type: "special" },
+            { name: "Sakura", type: "special" },
+            { name: "Star Sibyl", type: "special" }
         ];
 
         let currentSort = { column: 'name', direction: 'asc' };
@@ -365,6 +406,8 @@
             localStorage.setItem('ffxi-trusts-checked', JSON.stringify([...checkedTrusts]));
         }
 
+        let lastFilteredTrusts = [];
+
         function renderTable() {
             const tbody = document.getElementById('trust-tbody');
             const filteredTrusts = currentFilter === 'all' 
@@ -374,17 +417,30 @@
             const sortedTrusts = [...filteredTrusts].sort((a, b) => {
                 const aVal = a[currentSort.column];
                 const bVal = b[currentSort.column];
-                const compare = aVal.localeCompare(bVal);
+                if (!aVal || !bVal) return 0;
+                const compare = String(aVal).localeCompare(String(bVal));
                 return currentSort.direction === 'asc' ? compare : -compare;
             });
 
-            tbody.innerHTML = sortedTrusts.map(trust => {
+            lastFilteredTrusts = sortedTrusts;
+
+            tbody.innerHTML = sortedTrusts.map((trust, index) => {
                 const checked = checkedTrusts.has(trust.name);
+                const escapedName = trust.name.replace(/'/g, "\\'");
+                const typeLabels = {
+                    'tank': 'Tank',
+                    'melee': 'Melee',
+                    'ranged': 'Ranged',
+                    'caster': 'Caster',
+                    'healer': 'Healer',
+                    'support': 'Support',
+                    'special': 'Special'
+                };
                 return `
-                    <tr class="${checked ? 'checked' : ''}" data-type="${trust.type}">
-                        <td><input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleTrust('${trust.name}')"></td>
+                    <tr class="${checked ? 'checked' : ''}" data-type="${trust.type}" data-trust-name="${escapedName}">
+                        <td><input type="checkbox" ${checked ? 'checked' : ''} data-trust-index="${index}" onchange="toggleTrustByIndex(${index})"></td>
                         <td>${trust.name}</td>
-                        <td><span class="type-badge type-${trust.type}">${trust.type.charAt(0).toUpperCase() + trust.type.slice(1)}</span></td>
+                        <td><span class="type-badge type-${trust.type}">${typeLabels[trust.type]}</span></td>
                     </tr>
                 `;
             }).join('');
@@ -397,10 +453,10 @@
                 th.classList.remove('sort-asc', 'sort-desc');
             });
             
-            const headers = document.querySelectorAll('th');
+            const headers = document.querySelectorAll('th[data-column]');
             headers.forEach(th => {
-                const onclick = th.getAttribute('onclick');
-                if (onclick && onclick.includes(currentSort.column)) {
+                const column = th.getAttribute('data-column');
+                if (column === currentSort.column) {
                     th.classList.add(`sort-${currentSort.direction}`);
                 }
             });
@@ -414,6 +470,20 @@
                 currentSort.direction = 'asc';
             }
             renderTable();
+        }
+
+        function toggleTrustByIndex(index) {
+            const trust = lastFilteredTrusts[index];
+            if (!trust) return;
+            
+            if (checkedTrusts.has(trust.name)) {
+                checkedTrusts.delete(trust.name);
+            } else {
+                checkedTrusts.add(trust.name);
+            }
+            saveCheckedState();
+            renderTable();
+            updateStats();
         }
 
         function toggleTrust(name) {
