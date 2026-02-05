@@ -227,7 +227,7 @@
             <button onclick="checkAll()">Check All</button>
             <button onclick="exportData()">Export Data</button>
             <button onclick="importData()">Import Data</button>
-            <input type="file" id="import-file-input" accept=".json" style="display: none;" onchange="handleImportFile(event)">
+            <input type="file" id="import-file-input" accept=".json" style="display: none;" aria-label="Import trust data from JSON file" onchange="handleImportFile(event)">
             <div class="filter-group">
                 <button onclick="filterType('all')" class="active" id="filter-all">All</button>
                 <button onclick="filterType('tank')" id="filter-tank">Tank</button>
@@ -439,8 +439,14 @@
                 try {
                     const data = JSON.parse(e.target.result);
                     
+                    // Validate the backup file format
                     if (!data.checkedTrusts || !Array.isArray(data.checkedTrusts)) {
                         throw new Error('Invalid backup file format');
+                    }
+                    
+                    // Check version for future compatibility
+                    if (data.version && data.version !== 1) {
+                        console.warn(`Backup file version ${data.version} may not be fully compatible`);
                     }
                     
                     checkedTrusts = new Set(data.checkedTrusts);
