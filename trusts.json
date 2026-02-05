@@ -1,0 +1,490 @@
+[
+  {
+    "name": "Amchuchu",
+    "type": "tank"
+  },
+  {
+    "name": "Ark Angel EV",
+    "type": "tank"
+  },
+  {
+    "name": "Ark Angel HM",
+    "type": "tank"
+  },
+  {
+    "name": "August",
+    "type": "tank"
+  },
+  {
+    "name": "Curilla",
+    "type": "tank"
+  },
+  {
+    "name": "Gessho",
+    "type": "tank"
+  },
+  {
+    "name": "Mnejing",
+    "type": "tank"
+  },
+  {
+    "name": "Rahal",
+    "type": "tank"
+  },
+  {
+    "name": "Rughadjeen",
+    "type": "tank"
+  },
+  {
+    "name": "Trion",
+    "type": "tank"
+  },
+  {
+    "name": "Valaineral",
+    "type": "tank"
+  },
+  {
+    "name": "Abenzio",
+    "type": "melee"
+  },
+  {
+    "name": "Abquhbah",
+    "type": "melee"
+  },
+  {
+    "name": "Aldo",
+    "type": "melee"
+  },
+  {
+    "name": "Aldo (UC)",
+    "type": "melee"
+  },
+  {
+    "name": "Areuhat",
+    "type": "melee"
+  },
+  {
+    "name": "Ark Angel GK",
+    "type": "melee"
+  },
+  {
+    "name": "Ark Angel MR",
+    "type": "melee"
+  },
+  {
+    "name": "Ayame",
+    "type": "melee"
+  },
+  {
+    "name": "Ayame (UC)",
+    "type": "melee"
+  },
+  {
+    "name": "Babban Mheillea",
+    "type": "melee"
+  },
+  {
+    "name": "Balamor",
+    "type": "melee"
+  },
+  {
+    "name": "Chacharoon",
+    "type": "melee"
+  },
+  {
+    "name": "Cid",
+    "type": "melee"
+  },
+  {
+    "name": "Darrcuiln",
+    "type": "melee"
+  },
+  {
+    "name": "Excenmille",
+    "type": "melee"
+  },
+  {
+    "name": "Excenmille (S)",
+    "type": "melee"
+  },
+  {
+    "name": "Fablinix",
+    "type": "melee"
+  },
+  {
+    "name": "Flaviria (UC)",
+    "type": "melee"
+  },
+  {
+    "name": "Gilgamesh",
+    "type": "melee"
+  },
+  {
+    "name": "Halver",
+    "type": "melee"
+  },
+  {
+    "name": "Ingrid II",
+    "type": "melee"
+  },
+  {
+    "name": "Invincible Shield (UC)",
+    "type": "melee"
+  },
+  {
+    "name": "Iroha",
+    "type": "melee"
+  },
+  {
+    "name": "Iroha II",
+    "type": "melee"
+  },
+  {
+    "name": "Iron Eater",
+    "type": "melee"
+  },
+  {
+    "name": "Jakoh Wahcondalo (UC)",
+    "type": "melee"
+  },
+  {
+    "name": "Klara",
+    "type": "melee"
+  },
+  {
+    "name": "Lehko Habhoka",
+    "type": "melee"
+  },
+  {
+    "name": "Lhe Lhangavo",
+    "type": "melee"
+  },
+  {
+    "name": "Lhu Mhakaracca",
+    "type": "melee"
+  },
+  {
+    "name": "Lilisette",
+    "type": "melee"
+  },
+  {
+    "name": "Lilisette II",
+    "type": "melee"
+  },
+  {
+    "name": "Lion",
+    "type": "melee"
+  },
+  {
+    "name": "Lion II",
+    "type": "melee"
+  },
+  {
+    "name": "Luzaf",
+    "type": "melee"
+  },
+  {
+    "name": "Maat",
+    "type": "melee"
+  },
+  {
+    "name": "Maat (UC)",
+    "type": "melee"
+  },
+  {
+    "name": "Matsui-P",
+    "type": "melee"
+  },
+  {
+    "name": "Maximilian",
+    "type": "melee"
+  },
+  {
+    "name": "Mayakov",
+    "type": "melee"
+  },
+  {
+    "name": "Mildaurion",
+    "type": "melee"
+  },
+  {
+    "name": "Morimar",
+    "type": "melee"
+  },
+  {
+    "name": "Mumor",
+    "type": "melee"
+  },
+  {
+    "name": "Naja Salaheem",
+    "type": "melee"
+  },
+  {
+    "name": "Naja Salaheem (UC)",
+    "type": "melee"
+  },
+  {
+    "name": "Naji",
+    "type": "melee"
+  },
+  {
+    "name": "Nanaa Mihgo",
+    "type": "melee"
+  },
+  {
+    "name": "Nashmeira",
+    "type": "melee"
+  },
+  {
+    "name": "Nashmeira II",
+    "type": "melee"
+  },
+  {
+    "name": "Noillurie",
+    "type": "melee"
+  },
+  {
+    "name": "Prishe",
+    "type": "melee"
+  },
+  {
+    "name": "Prishe II",
+    "type": "melee"
+  },
+  {
+    "name": "Rainemard",
+    "type": "melee"
+  },
+  {
+    "name": "Romaa Mihgo",
+    "type": "melee"
+  },
+  {
+    "name": "Rongelouts",
+    "type": "melee"
+  },
+  {
+    "name": "Selh'teus",
+    "type": "melee"
+  },
+  {
+    "name": "Shikaree Z",
+    "type": "melee"
+  },
+  {
+    "name": "Tenzen",
+    "type": "melee"
+  },
+  {
+    "name": "Teodor",
+    "type": "melee"
+  },
+  {
+    "name": "Uka Totlihn",
+    "type": "melee"
+  },
+  {
+    "name": "Volker",
+    "type": "melee"
+  },
+  {
+    "name": "Zazarg",
+    "type": "melee"
+  },
+  {
+    "name": "Zeid",
+    "type": "melee"
+  },
+  {
+    "name": "Zeid II",
+    "type": "melee"
+  },
+  {
+    "name": "Elivira",
+    "type": "ranged"
+  },
+  {
+    "name": "Makki-Chebukki",
+    "type": "ranged"
+  },
+  {
+    "name": "Margret",
+    "type": "ranged"
+  },
+  {
+    "name": "Najelith",
+    "type": "ranged"
+  },
+  {
+    "name": "Semih Lafihna",
+    "type": "ranged"
+  },
+  {
+    "name": "Tenzen II",
+    "type": "ranged"
+  },
+  {
+    "name": "Adelheid",
+    "type": "caster"
+  },
+  {
+    "name": "Ajido-Marujido",
+    "type": "caster"
+  },
+  {
+    "name": "Ark Angel TT",
+    "type": "caster"
+  },
+  {
+    "name": "Domina Shantotto",
+    "type": "caster"
+  },
+  {
+    "name": "Gadalar",
+    "type": "caster"
+  },
+  {
+    "name": "Ingrid",
+    "type": "caster"
+  },
+  {
+    "name": "Kayeel-Payeel",
+    "type": "caster"
+  },
+  {
+    "name": "Kukki-Chebukki",
+    "type": "caster"
+  },
+  {
+    "name": "Leonoyne",
+    "type": "caster"
+  },
+  {
+    "name": "Mumor II",
+    "type": "caster"
+  },
+  {
+    "name": "Ovjang",
+    "type": "caster"
+  },
+  {
+    "name": "Robel-Akbel",
+    "type": "caster"
+  },
+  {
+    "name": "Rosulatia",
+    "type": "caster"
+  },
+  {
+    "name": "Shantotto",
+    "type": "caster"
+  },
+  {
+    "name": "Shantotto II",
+    "type": "caster"
+  },
+  {
+    "name": "Ullegore",
+    "type": "caster"
+  },
+  {
+    "name": "Apururu (UC)",
+    "type": "healer"
+  },
+  {
+    "name": "Cherukiki",
+    "type": "healer"
+  },
+  {
+    "name": "Ferreous Coffin",
+    "type": "healer"
+  },
+  {
+    "name": "Karaha-Baruha",
+    "type": "healer"
+  },
+  {
+    "name": "Kupipi",
+    "type": "healer"
+  },
+  {
+    "name": "Mihli Aliapoh",
+    "type": "healer"
+  },
+  {
+    "name": "Monberaux",
+    "type": "healer"
+  },
+  {
+    "name": "Pieuje (UC)",
+    "type": "healer"
+  },
+  {
+    "name": "Yoran-Oran (UC)",
+    "type": "healer"
+  },
+  {
+    "name": "Ygnas",
+    "type": "healer"
+  },
+  {
+    "name": "Arciela",
+    "type": "support"
+  },
+  {
+    "name": "Arciela II",
+    "type": "support"
+  },
+  {
+    "name": "Joachim",
+    "type": "support"
+  },
+  {
+    "name": "King of Hearts",
+    "type": "support"
+  },
+  {
+    "name": "Koru-Moru",
+    "type": "support"
+  },
+  {
+    "name": "Qultada",
+    "type": "support"
+  },
+  {
+    "name": "Sylvie (UC)",
+    "type": "support"
+  },
+  {
+    "name": "Ulmia",
+    "type": "support"
+  },
+  {
+    "name": "Brygid",
+    "type": "special"
+  },
+  {
+    "name": "Cornelia",
+    "type": "special"
+  },
+  {
+    "name": "Kupofried",
+    "type": "special"
+  },
+  {
+    "name": "Kuyin Hathdenna",
+    "type": "special"
+  },
+  {
+    "name": "Moogle",
+    "type": "special"
+  },
+  {
+    "name": "Sakura",
+    "type": "special"
+  },
+  {
+    "name": "Star Sibyl",
+    "type": "special"
+  }
+]
