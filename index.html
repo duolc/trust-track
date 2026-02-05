@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FFXI Trust Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #4a9eff;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #888;
+            margin-bottom: 30px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .stats {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .stat-value {
+            color: #4a9eff;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        button {
+            background: #2a2a2a;
+            color: #e0e0e0;
+            border: 2px solid #444;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: #3a3a3a;
+            border-color: #4a9eff;
+        }
+
+        button.active {
+            background: #4a9eff;
+            border-color: #4a9eff;
+            color: #1a1a1a;
+        }
+
+        .trust-table {
+            background: #2a2a2a;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #333;
+        }
+
+        th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #4a9eff;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+        }
+
+        th:hover {
+            background: #3a3a3a;
+        }
+
+        th::after {
+            content: ' ⇅';
+            color: #666;
+            font-size: 0.8em;
+        }
+
+        th.sort-asc::after {
+            content: ' ↑';
+            color: #4a9eff;
+        }
+
+        th.sort-desc::after {
+            content: ' ↓';
+            color: #4a9eff;
+        }
+
+        td {
+            padding: 12px 15px;
+            border-top: 1px solid #333;
+        }
+
+        tr:hover {
+            background: #333;
+        }
+
+        tr.checked {
+            background: rgba(74, 158, 255, 0.1);
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            accent-color: #4a9eff;
+        }
+
+        .type-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 0.85em;
+            font-weight: 500;
+        }
+
+        .type-tank { background: #ff6b6b; color: #fff; }
+        .type-healer { background: #51cf66; color: #fff; }
+        .type-support { background: #4a9eff; color: #fff; }
+        .type-melee { background: #ffa94d; color: #fff; }
+        .type-mage { background: #9775fa; color: #fff; }
+        .type-ranged { background: #20c997; color: #fff; }
+
+        .filter-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            button {
+                width: 100%;
+            }
+
+            th, td {
+                padding: 10px;
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎮 FFXI Trust Tracker</h1>
+        <p class="subtitle">Track your collected FFXI Trusts</p>
+
+        <div class="stats">
+            <div class="stat-item">
+                <span class="stat-label">Collected</span>
+                <span class="stat-value" id="collected-count">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Total</span>
+                <span class="stat-value" id="total-count">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-label">Progress</span>
+                <span class="stat-value" id="progress-percent">0%</span>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button onclick="clearAll()">Clear All</button>
+            <button onclick="checkAll()">Check All</button>
+            <div class="filter-group">
+                <button onclick="filterType('all')" class="active" id="filter-all">All</button>
+                <button onclick="filterType('tank')" id="filter-tank">Tank</button>
+                <button onclick="filterType('healer')" id="filter-healer">Healer</button>
+                <button onclick="filterType('support')" id="filter-support">Support</button>
+                <button onclick="filterType('melee')" id="filter-melee">Melee</button>
+                <button onclick="filterType('mage')" id="filter-mage">Mage</button>
+                <button onclick="filterType('ranged')" id="filter-ranged">Ranged</button>
+            </div>
+        </div>
+
+        <div class="trust-table">
+            <table id="trust-table">
+                <thead>
+                    <tr>
+                        <th style="width: 60px;">Done</th>
+                        <th onclick="sortTable('name')">Name</th>
+                        <th onclick="sortTable('type')">Type</th>
+                    </tr>
+                </thead>
+                <tbody id="trust-tbody">
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        const trusts = [
+            { name: "Adelheid", type: "melee" },
+            { name: "Ajido-Marujido", type: "mage" },
+            { name: "Akeru-Bokeru", type: "support" },
+            { name: "Aldo", type: "support" },
+            { name: "Amchuchu", type: "support" },
+            { name: "Apururu", type: "healer" },
+            { name: "Arciela", type: "support" },
+            { name: "Areuhat", type: "mage" },
+            { name: "Ark Angel EV", type: "tank" },
+            { name: "Ark Angel GK", type: "melee" },
+            { name: "Ark Angel HM", type: "melee" },
+            { name: "Ark Angel MR", type: "mage" },
+            { name: "Ark Angel TT", type: "ranged" },
+            { name: "Ashera", type: "support" },
+            { name: "Augustin", type: "support" },
+            { name: "Ayame", type: "melee" },
+            { name: "Balamor", type: "melee" },
+            { name: "Brygid", type: "melee" },
+            { name: "Cherukiki", type: "healer" },
+            { name: "Cid", type: "support" },
+            { name: "Cornelia", type: "mage" },
+            { name: "Curilla", type: "tank" },
+            { name: "D. Shantotto", type: "mage" },
+            { name: "Darrcuiln", type: "melee" },
+            { name: "Excenmille", type: "melee" },
+            { name: "Fablinix", type: "support" },
+            { name: "Ferreous Coffin", type: "tank" },
+            { name: "Gadalar", type: "melee" },
+            { name: "Gessho", type: "melee" },
+            { name: "Gilgamesh", type: "melee" },
+            { name: "Gromaart", type: "tank" },
+            { name: "Halver", type: "melee" },
+            { name: "Ingrid", type: "tank" },
+            { name: "Iroha", type: "melee" },
+            { name: "Jakoh Wahcondalo", type: "melee" },
+            { name: "Joachim", type: "support" },
+            { name: "Joanlaut", type: "ranged" },
+            { name: "Kanda", type: "tank" },
+            { name: "Karaha-Baruha", type: "mage" },
+            { name: "King of Hearts", type: "support" },
+            { name: "Koru-Moru", type: "mage" },
+            { name: "Kupipi", type: "healer" },
+            { name: "Kukki-Chebukki", type: "mage" },
+            { name: "Lhe Lhangavo", type: "support" },
+            { name: "Lhu Mhakaracca", type: "melee" },
+            { name: "Lilisette", type: "support" },
+            { name: "Lion", type: "melee" },
+            { name: "Luzaf", type: "support" },
+            { name: "Makki-Chebukki", type: "support" },
+            { name: "Margret", type: "ranged" },
+            { name: "Mayakov", type: "support" },
+            { name: "Mildaurion", type: "mage" },
+            { name: "Mihli Aliapoh", type: "melee" },
+            { name: "Mnejing", type: "support" },
+            { name: "Monberaux", type: "support" },
+            { name: "Morimar", type: "mage" },
+            { name: "Mumor", type: "support" },
+            { name: "Najelith", type: "melee" },
+            { name: "Naja Salaheem", type: "melee" },
+            { name: "Nanaa Mihgo", type: "melee" },
+            { name: "Nashmeira", type: "support" },
+            { name: "Noillurie", type: "healer" },
+            { name: "Ovjang", type: "melee" },
+            { name: "Pieuje", type: "mage" },
+            { name: "Prishe", type: "melee" },
+            { name: "Qultada", type: "support" },
+            { name: "Rahal", type: "melee" },
+            { name: "Rainemard", type: "support" },
+            { name: "Rakoh", type: "melee" },
+            { name: "Rongelouts", type: "tank" },
+            { name: "Rosulatia", type: "support" },
+            { name: "Rukususu", type: "healer" },
+            { name: "Sakura", type: "melee" },
+            { name: "Selh'teus", type: "support" },
+            { name: "Semih Lafihna", type: "mage" },
+            { name: "Shantotto", type: "mage" },
+            { name: "Shikaree Z", type: "ranged" },
+            { name: "Silvie", type: "support" },
+            { name: "Star Sibyl", type: "healer" },
+            { name: "Tenzen", type: "melee" },
+            { name: "Teodor", type: "support" },
+            { name: "Trion", type: "tank" },
+            { name: "Tsugumi", type: "ranged" },
+            { name: "Uka Totlihn", type: "healer" },
+            { name: "Ullegore", type: "tank" },
+            { name: "Ulmia", type: "support" },
+            { name: "Valaineral", type: "tank" },
+            { name: "Volker", type: "tank" },
+            { name: "Yoran-Oran", type: "healer" },
+            { name: "Zeid", type: "melee" }
+        ];
+
+        let currentSort = { column: 'name', direction: 'asc' };
+        let currentFilter = 'all';
+        let checkedTrusts = new Set();
+
+        function init() {
+            loadCheckedState();
+            renderTable();
+            updateStats();
+        }
+
+        function loadCheckedState() {
+            const saved = localStorage.getItem('ffxi-trusts-checked');
+            if (saved) {
+                checkedTrusts = new Set(JSON.parse(saved));
+            }
+        }
+
+        function saveCheckedState() {
+            localStorage.setItem('ffxi-trusts-checked', JSON.stringify([...checkedTrusts]));
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('trust-tbody');
+            const filteredTrusts = currentFilter === 'all' 
+                ? trusts 
+                : trusts.filter(t => t.type === currentFilter);
+
+            const sortedTrusts = [...filteredTrusts].sort((a, b) => {
+                const aVal = a[currentSort.column];
+                const bVal = b[currentSort.column];
+                const compare = aVal.localeCompare(bVal);
+                return currentSort.direction === 'asc' ? compare : -compare;
+            });
+
+            tbody.innerHTML = sortedTrusts.map(trust => {
+                const checked = checkedTrusts.has(trust.name);
+                return `
+                    <tr class="${checked ? 'checked' : ''}" data-type="${trust.type}">
+                        <td><input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleTrust('${trust.name}')"></td>
+                        <td>${trust.name}</td>
+                        <td><span class="type-badge type-${trust.type}">${trust.type.charAt(0).toUpperCase() + trust.type.slice(1)}</span></td>
+                    </tr>
+                `;
+            }).join('');
+
+            updateSortIndicators();
+        }
+
+        function updateSortIndicators() {
+            document.querySelectorAll('th').forEach(th => {
+                th.classList.remove('sort-asc', 'sort-desc');
+            });
+            
+            const headers = document.querySelectorAll('th');
+            headers.forEach(th => {
+                const onclick = th.getAttribute('onclick');
+                if (onclick && onclick.includes(currentSort.column)) {
+                    th.classList.add(`sort-${currentSort.direction}`);
+                }
+            });
+        }
+
+        function sortTable(column) {
+            if (currentSort.column === column) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.column = column;
+                currentSort.direction = 'asc';
+            }
+            renderTable();
+        }
+
+        function toggleTrust(name) {
+            if (checkedTrusts.has(name)) {
+                checkedTrusts.delete(name);
+            } else {
+                checkedTrusts.add(name);
+            }
+            saveCheckedState();
+            renderTable();
+            updateStats();
+        }
+
+        function updateStats() {
+            const total = trusts.length;
+            const collected = checkedTrusts.size;
+            const progress = total > 0 ? Math.round((collected / total) * 100) : 0;
+
+            document.getElementById('collected-count').textContent = collected;
+            document.getElementById('total-count').textContent = total;
+            document.getElementById('progress-percent').textContent = progress + '%';
+        }
+
+        function clearAll() {
+            if (confirm('Are you sure you want to clear all checkboxes?')) {
+                checkedTrusts.clear();
+                saveCheckedState();
+                renderTable();
+                updateStats();
+            }
+        }
+
+        function checkAll() {
+            trusts.forEach(trust => checkedTrusts.add(trust.name));
+            saveCheckedState();
+            renderTable();
+            updateStats();
+        }
+
+        function filterType(type) {
+            currentFilter = type;
+            
+            document.querySelectorAll('.filter-group button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(`filter-${type}`).classList.add('active');
+            
+            renderTable();
+        }
+
+        init();
+    </script>
+</body>
+</html>
